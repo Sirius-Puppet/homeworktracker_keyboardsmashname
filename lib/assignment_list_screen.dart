@@ -13,48 +13,47 @@ class _AssignmentListScreenState extends State<AssignmentListScreen> {
   void _showAddAssignmentDialog() {
   String newAssignmentTitle = ' ';
 
-  showDialog(
-    context: context,
-    builder: (content) {
-      return AlertDialog(
-        title: const Text('Add Assignment'), 
-        content: TextField(
-          autofocus: true,
-          decoration: const InputDecoration(hintText: 'Enter Assignment Title'),
-          onChanged: (value) {
-            newAssignmentTitle = value;
-          },
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: const Text('Cancel'),
-          ),
-          TextButton(
-            onPressed: () {
-              if (newAssignmentTitle.trim().isNotEmpty) {
-                setState(() {
-                  _assignments.add({
-                    'title': newAssignmentTitle.trim(),
-                    'completed': false
-                  });
-                });
-              }
-              Navigator.pop(context);
+    showDialog(
+      context: context,
+      builder: (content) {
+        return AlertDialog(
+          title: const Text('Add Assignment'), 
+          content: TextField(
+            autofocus: true,
+            decoration: const InputDecoration(hintText: 'Enter Assignment Title'),
+            onChanged: (value) {
+              newAssignmentTitle = value;
             },
-            child: const Text('Add'),
           ),
-        ],
-      );
-    },
-  );
-}
-
-void _toggleCompleted(int index, bool? value) {
-  setState(() {
-    _assignments[index]['completed'] = value ?? false;
-  });
-
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: const Text('Cancel'),
+            ),
+            TextButton(
+              onPressed: () {
+                if (newAssignmentTitle.trim().isNotEmpty) {
+                  setState(() {
+                    _assignments.add({
+                      'title': newAssignmentTitle.trim(),
+                      'completed': false
+                    });
+                  });
+                }
+                Navigator.pop(context);
+              },
+              child: const Text('Add'),
+            ),
+          ],
+        );
+      },
+    );
+  } 
+  void _toggleCompleted(int index, bool? value) {
+    setState(() {
+      _assignments[index]['completed'] = value ?? false;
+    });
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -63,10 +62,10 @@ void _toggleCompleted(int index, bool? value) {
         itemCount: _assignments.length,
         itemBuilder: (context, index) {
           return CheckboxListTile(
-            title: Text(_assignments[index]['title']),
-            value: _assignments[index]['completed'],
-            onChanged: (value) => _toggleCompleted(index, value),
-          );;
+          title: Text(_assignments[index]['title']),
+          value: _assignments[index]['completed'],
+          onChanged: (value) => _toggelCompleted(index, value),
+        );
         },
       ),
       floatingActionButton: FloatingActionButton(
@@ -74,7 +73,8 @@ void _toggleCompleted(int index, bool? value) {
         child: const Icon(Icons.add),
       ),
     );
+
   }
-}
+
 }
 

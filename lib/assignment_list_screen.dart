@@ -54,19 +54,61 @@ class _AssignmentListScreenState extends State<AssignmentListScreen> {
       _assignments[index]['completed'] = value ?? false;
     });
   }
+  String text = '';
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text('Assignments')),
       body: ListView.builder(
         itemCount: _assignments.length,
-        itemBuilder: (context, index) {
-          return CheckboxListTile(
-          title: Text(_assignments[index]['title']),
-          value: _assignments[index]['completed'],
-          onChanged: (value) => _toggleCompleted(index, value),
-        );
-        },
+        itemBuilder: (context, index,) {
+          return Card(
+            color: Colors.blue,
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: ListTile(
+                title: Text(_assignments[index]['title']),
+                trailing: Container(
+                  width: 70,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Expanded(
+                        child: IconButton(onPressed: () {
+                          showDialog(context: context, builder: (context) => SimpleDialog(
+                            children: [
+                              TextField(
+                                onChanged: (value) {
+                                  setState(() {
+                                    text = value;
+                                  });
+                                },
+                              ),
+                              ElevatedButton(
+                                onPressed: () {
+                                  setState(() {
+                                    _assignments[index]['title'] = text;
+                                  });
+                                  Navigator.pop(context);
+                                }, child: Text('update'))
+
+                              
+                            ],
+                          ),);
+                        }, icon: Icon(Icons.edit))),
+                        Expanded(child: IconButton(onPressed: () {
+                          setState(() {
+_assignments.removeAt(index);
+                          });
+                        }, icon: Icon(Icons.delete))),
+                        
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          );
+        }
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: _showAddAssignmentDialog,

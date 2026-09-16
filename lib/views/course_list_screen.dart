@@ -53,6 +53,7 @@ class _CourseListScreenState extends State<CourseListScreen> {
         );
       },
     );
+  }
 
     @override
     Widget build(BuildContext context) {
@@ -76,5 +77,4 @@ class _CourseListScreenState extends State<CourseListScreen> {
         ),
       );
     }
-  }
 }

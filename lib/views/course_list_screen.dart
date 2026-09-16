@@ -64,10 +64,17 @@ class _CourseListScreenState extends State<CourseListScreen> {
           itemCount: courses.length,
           itemBuilder: (context, index) {
             final course = courses[index];
-            return ListTile(autofocus: ,)
-          }
-        )
-      )
+            return ListTile(
+              title: Text(course.name),
+              subtitle: course.description != null ? Text(course.description!) : null,
+            );
+          },
+        ),
+        floatingActionButton: FloatingActionButton(
+          onPressed: _showAddCourseDialog,
+          child: const Icon(Icons.add),
+        ),
+      );
     }
   }
 }

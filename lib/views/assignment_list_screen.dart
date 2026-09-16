@@ -47,11 +47,7 @@ class _AssignmentListScreenState extends State<AssignmentListScreen> {
       },
     );
   } 
-  void _toggleCompleted(int index, bool? value) {
-    setState(() {
-      _assignments[index]['completed'] = value ?? false;
-    });
-  }
+
   String text = '';
   @override
   Widget build(BuildContext context) {

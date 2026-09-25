@@ -13,13 +13,16 @@ class _SignupScreenState extends State<SignupScreen> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   final _confirmPasswordController = TextEditingController();
+  final _confirmEmailController = TextEditingController();
   final _presenter = AuthPresenter();
 
   String? _errorMessage;
 
   void _handleSignup() async {
     final password = _passwordController.text.trim();
+    final email = _emailController.text.trim();
     final confirmPassword = _confirmPasswordController.text.trim();
+    final confirmEmail = _confirmEmailController.text.trim();
 
     if (password != confirmPassword) {
       setState(() => _errorMessage = "Passwords do not match.");
@@ -36,6 +39,11 @@ class _SignupScreenState extends State<SignupScreen> {
         context,
         MaterialPageRoute(builder: (_) => const MainNavigationScreen()),
       );
+    }
+
+    if (email != confirmEmail) {
+      setState(() => _errorMessage = "Emails do not match.");
+      return;
     }
   }
 

@@ -29,6 +29,34 @@ class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
   @override
   State<SplashScreen> createState() => _SplashScreenState();
+
+  @override
+  Widget build(BuildContext context) {
+    return StreamBuilder<User?>(
+      stream: FirebaseAuth.instance.authStateChanges(),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const Scaffold(
+            backgroundColor: Colors.blue,
+            body: Center(
+              child: Text(
+                'Homework Tracker',
+                style: TextStyle(
+                  fontSize: 28,
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+          );
+        }
+        if (snapshot.hasData) {
+          return const MainNavigationScreen();
+        }
+        return const LoginScreen();
+      },
+    );
+  }
 }
 
 class _SplashScreenState extends State<SplashScreen> {

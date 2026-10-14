@@ -11,13 +11,14 @@ class AssignmentListScreen extends StatefulWidget {
 }
 
 class _AssignmentListScreenState extends State<AssignmentListScreen> {
-  final AssignmentPresenter _assignmentPresenter = AssignmentPresenter();
+  final AssignmentPresenter _presenter = AssignmentPresenter();
   final CoursePresenter _coursePresenter = CoursePresenter();
 
   bool _isLoading = true;
   String? _selectedCourseFilter;
   String? _newAssignmentCourse;
   List<String> _courseNames = [];
+
   @override
   void initState() {
     super.initState();
@@ -26,11 +27,16 @@ class _AssignmentListScreenState extends State<AssignmentListScreen> {
 
   Future<void> _loadData() async {
     await _coursePresenter.loadCourses();
-    await _assignmentPresenter.loadAssignments();
+    await _presenter.loadAssignments();
     setState(() {
       _isLoading = false;
       _courseNames = _coursePresenter.courses.map((c) => c.name).toList();
     });
+  }
+
+  Future<void> _loadAssignments() async {
+    await _presenter.loadAssignments();
+    setState(() => _isLoading = false);
   }
 
   void _showAddAssignmentDialog() {
@@ -38,49 +44,58 @@ class _AssignmentListScreenState extends State<AssignmentListScreen> {
   _newAssignmentCourse = _courseNames.isNotEmpty ? _courseNames.first : null;
 
     showDialog(
-      context: context,
-      builder: (content) {
-        return AlertDialog(
-          title: const Text('Add Assignment'), 
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              TextField(
-                decoration: const InputDecoration(
-                  hintText: 'Enter assignment title',
+      builder: (BuildContext dialogContext) {
+        return StatefulBuilder(
+          builder: (context, setDialogState) {
+            return AlterDialog(
+              title: const Text('Add Assignment'),
+              content: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  TextField(
+                    decoration: const InputDecoration(
+                      hintText: 'enter assignment title',
+                    ),
+                    onChanged: (value) {
+                      newAssignmentTitle = value;
+                    },
+                  ),
+                  const SizedBox(height: 12),
+                  DropdownButton<String>(
+                    value: _newAssignmentCourse
+                    items: _courseNames.map((name) {
+                      return DropdownMenuItem(value: name, child: Text(name));
+                    }).toList(),
+                    onChanged: (value) => setDialogState(() => _newAssignmentCourse = value),
+                  ),
+                ],
+              ),
+              actions: [
+                TextButton(
+                  onPressed: () => Navigator.pop(context),
+                  child: const Text('Cancel'),
                 ),
-                onChanged: (value) => newAssignmentTitle = value,
-              ),
-              const SizedBox(height: 12),
-              DropdownButton<String>(
-                value: _newAssignmentCourse,
-                items: _courseNames.map((name) {
-                  return DropdownMenuItem(value: name, child: Text(name));
-                }).toList(),
-                onChanged: (value) => setState(() => _newAssignmentCourse = value),
-              ),
-              
-              TextButton(
-                onPressed: () async {
-                  if (newAssignmentTitle.trim().isNotEmpty && _newAssignmentCourse != null) {
-                    await _assignmentPresenter.addAssignment(newAssignmentTitle.trim(), _newAssignmentCourse!);
-                    setState(() {});
-                    Navigator.pop(context);
-                  }
-                },
-                child: const Text('add'),
-              ),
-            ],
-          ),
+                TextButton(
+                  onPressed: () async {
+                    if (newAssignmentTitle.trim().isNotEmpty && _newAssignmentCourse != null) {
+                      await _presenter.addAssignment(newAssignmentTitle.trim(), _newAssignmentCourse!,);
+                      setState(() {});
+                      Navigator.pop(dialogContext);
+                    }
+                  },
+                  child: const Text('Add'),
+                ),
+              ],
+            );
+          },
         );
-      },
+      }
     );
   } 
 
-  String text = '';
   @override
   Widget build(BuildContext context) {
-    final assignments = _assignmentPresenter.assignments;
+    final assignments = _presenter.assignments;
     final displayedAssignments = _selectedCourseFilter == null ? assignments : assignments.where((a) => a.courseName == _selectedCourseFilter).toList();
 
 
@@ -92,7 +107,7 @@ class _AssignmentListScreenState extends State<AssignmentListScreen> {
             'Filter by Course',
             style: TextStyle(color: Colors.white),
           ),
-          dropdownColor: Colors.purple[100],
+          dropdownColor: Colors.purple,
           value: _selectedCourseFilter,
           onChanged: (value) {
             setState(() {
@@ -121,7 +136,7 @@ class _AssignmentListScreenState extends State<AssignmentListScreen> {
             subtitle: Text('Course: ${assignment.courseName}'),
             value: assignment.isCompleted,
             onChanged: (_) async {
-              await _assignmentPresenter.toggleCompleted(index);
+              await _presenter.toggleCompleted(index);
               setState(() {});
             },
           );

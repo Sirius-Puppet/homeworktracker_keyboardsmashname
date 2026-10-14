@@ -58,7 +58,7 @@ class _SignupScreenState extends State<SignupScreen> {
         padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
-            if (_errorMessage != null) Text(_errorMessage!, style: const TextStyle(color: Colors.red),),
+            if (_errorMessage != null) Text(_errorMessage!, style: const TextStyle(color: Colors.purple),),
             TextField(
               controller: _emailController,
               decoration: const InputDecoration(labelText: 'Email'),

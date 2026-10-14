@@ -54,7 +54,7 @@ class ProfileScreen extends StatelessWidget {
               label: const Text('Logout'),
               style: ElevatedButton.styleFrom(
                 minimumSize: const Size.fromHeight(50),
-                backgroundColor: Colors.redAccent,
+                backgroundColor: Colors.lightBlueAccent,
               ),
             ),
           ],

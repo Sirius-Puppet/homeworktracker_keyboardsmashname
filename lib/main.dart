@@ -37,13 +37,13 @@ class SplashScreen extends StatefulWidget {
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const Scaffold(
-            backgroundColor: Colors.blue,
+            backgroundColor: Colors.white,
             body: Center(
               child: Text(
                 'Homework Tracker',
                 style: TextStyle(
                   fontSize: 28,
-                  color: Colors.white,
+                  color: Colors.deepPurpleAccent,
                   fontWeight: FontWeight.bold,
                 ),
               ),
@@ -80,13 +80,13 @@ class _SplashScreenState extends State<SplashScreen> {
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const Scaffold(
-            backgroundColor: Colors.blue,
+            backgroundColor: Colors.white,
             body: Center(
               child: Text(
                 'Homework Tracker',
                 style: TextStyle(
                   fontSize: 28,
-                  color: Colors.white,
+                  color: Colors.purple,
                   fontWeight: FontWeight.bold,
                 ),
               ),

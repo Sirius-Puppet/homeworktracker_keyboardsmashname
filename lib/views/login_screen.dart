@@ -45,7 +45,7 @@ class _LoginScreenState extends State<LoginScreen> {
         child: Column(
           children: [
             if (_errorMessage != null)
-              Text(_errorMessage!, style: const TextStyle(color: Colors.red)),
+              Text(_errorMessage!, style: const TextStyle(color: Colors.purple)),
               TextField(
                 controller: _emailController,
                 decoration: const InputDecoration(labelText: 'Email'),

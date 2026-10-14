@@ -44,10 +44,11 @@ class _AssignmentListScreenState extends State<AssignmentListScreen> {
   _newAssignmentCourse = _courseNames.isNotEmpty ? _courseNames.first : null;
 
     showDialog(
+      context: context,
       builder: (BuildContext dialogContext) {
         return StatefulBuilder(
           builder: (context, setDialogState) {
-            return AlterDialog(
+            return AlertDialog(
               title: const Text('Add Assignment'),
               content: Column(
                 mainAxisSize: MainAxisSize.min,
@@ -62,7 +63,7 @@ class _AssignmentListScreenState extends State<AssignmentListScreen> {
                   ),
                   const SizedBox(height: 12),
                   DropdownButton<String>(
-                    value: _newAssignmentCourse
+                    value: _newAssignmentCourse,
                     items: _courseNames.map((name) {
                       return DropdownMenuItem(value: name, child: Text(name));
                     }).toList(),

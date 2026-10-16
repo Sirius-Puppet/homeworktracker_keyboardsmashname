@@ -19,7 +19,7 @@ class Assignment {
     final userId = _auth.currentUser?.uid;
     if (userId == null) return [];
 
-    final snapshot = await _db.child('assigments/$userId').get();
+    final snapshot = await _db.child('assignments/$userId').get();
     final List<Assignment> assignments = [];
 
     if (snapshot.exists) {
@@ -27,7 +27,7 @@ class Assignment {
       data.forEach((key, value) {
         assignments.add(Assignment (
           title: value['title'],
-          courseName: value['CourseName'] ?? 'Unknown',
+          courseName: value['courseName'] ?? 'Unknown',
           isCompleted: value['isCompleted'],
         ));
       });
